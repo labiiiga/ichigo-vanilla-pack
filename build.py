@@ -117,6 +117,25 @@ def crescent(color=4,cross=False):
 for name,c,cross in [('getsuga',4,False),('blue_getsuga',7,False),('jujisho',7,True),('mugetsu_wave',10,False)]:model(name,crescent(c,cross),{'gui':{'scale':[.6,.6,.6]}})
 model('cero', [cube([4,4,4],[12,12,12],4),cube([6,6,2],[10,10,14],5),cube([2,6,6],[14,10,10],5),cube([6,2,6],[10,14,10],3)],{'gui':{'scale':[.65,.65,.65]}})
 
+# Smooth Blender-baked animated ribbons. Vanilla cannot load arbitrary .blend
+# meshes: three close, double-sided cards retain the curved outline and depth.
+# Keep source frames and editable meshes in art/ for reproducible exports.
+for name in ('getsuga','blue_getsuga'):
+    frames=[Image.open(ROOT/f'art/frames/{name}/{i:02}.png').convert('RGBA') for i in range(1,9)]
+    assert all(im.size==(512,512) for im in frames), 'Bake art/bake_getsuga.py first'
+    sheet=Image.new('RGBA',(512,4096))
+    for i,im in enumerate(frames): sheet.paste(im,(0,i*512))
+    sheet.save(RP/f'assets/ichigo/textures/item/{name}.png')
+    js(RP,f'assets/ichigo/textures/item/{name}.png.mcmeta',{'animation':{'frametime':1,'interpolate':False}})
+    elements=[]
+    for z in (7.5,8,8.5):
+        elements.append({'from':[-8,-8,z],'to':[24,24,z+.01],'shade':False,
+                         'faces':{'north':{'texture':'#slash','uv':[16,0,0,16]},
+                                  'south':{'texture':'#slash','uv':[0,0,16,16]}}})
+    js(RP,f'assets/ichigo/models/item/{name}.json',{'ambientocclusion':False,
+       'textures':{'slash':f'ichigo:item/{name}','particle':f'ichigo:item/{name}'},
+       'elements':elements,'display':{'gui':{'scale':[.6,.6,.6]}}})
+
 # Original armor painting on the standard 64x32 humanoid atlas.
 for form in ['shikai','bankai','hollow','vasto','true','mugetsu']:
     for layer in ['humanoid','humanoid_leggings']:
@@ -191,7 +210,8 @@ scoreboard players set @a[scores={ig.use=1..}] ig.use 0
 execute in minecraft:overworld as @e[type=marker,tag=ig.projectile] at @s run function ichigo:projectile/tick
 execute in minecraft:the_nether as @e[type=marker,tag=ig.projectile] at @s run function ichigo:projectile/tick
 execute in minecraft:the_end as @e[type=marker,tag=ig.projectile] at @s run function ichigo:projectile/tick''')
-fn('player_tick','''scoreboard players add @s ig.regen 1
+fn('player_tick','''execute if score #unlimited ig.energy matches 1 run scoreboard players set @s ig.energy 100
+scoreboard players add @s ig.regen 1
 execute if score @s ig.regen matches 10.. if score @s ig.energy matches ..99 run scoreboard players add @s ig.energy 1
 execute if score @s ig.regen matches 10.. run scoreboard players set @s ig.regen 0
 scoreboard players remove @s[scores={ig.formtime=1..}] ig.formtime 1
@@ -199,7 +219,8 @@ execute if score @s ig.form matches 6 if score @s ig.formtime matches 0 run func
 execute if score @s ig.form matches 4 if score @s ig.formtime matches 0 run function ichigo:form/bankai
 execute if score @s ig.form matches 3 if score @s ig.formtime matches 0 run function ichigo:form/bankai
 execute if score @s ig.form matches 2.. run particle minecraft:dust{color:[0.15,0.03,0.07],scale:0.8} ~ ~1 ~ .25 .6 .25 0 1 normal @a[distance=..40]
-title @s actionbar [{"text":"霊圧 ","color":"aqua"},{"score":{"name":"@s","objective":"ig.energy"}},{"text":"/100  |  คลิก:Getsuga  ย่อ:Shunpo  วิ่ง:ท่าพิเศษ  กระโดด:ไม้ตาย","color":"gray"}]''')
+execute unless score #unlimited ig.energy matches 1 run title @s actionbar [{"text":"霊圧 ","color":"aqua"},{"score":{"name":"@s","objective":"ig.energy"}},{"text":"/100  |  คลิก:Getsuga  ย่อ:Shunpo  วิ่ง:ท่าพิเศษ  กระโดด:ไม้ตาย","color":"gray"}]
+execute if score #unlimited ig.energy matches 1 run title @s actionbar [{"text":"霊圧 ∞  |  ","color":"aqua"},{"text":"คลิก:Getsuga  ย่อ:Shunpo  วิ่ง:ท่าพิเศษ  กระโดด:ไม้ตาย","color":"gray"}]''')
 forms=[('shikai','SHIKAI · Zangetsu','zangetsu',8,0),('bankai','BANKAI · Tensa Zangetsu','tensa_zangetsu',12,0),('hollow','HOLLOW MASK','hollow_zangetsu',15,1200),('vasto','VASTO LORDE','hollow_zangetsu',18,600),('true','TRUE SHIKAI · Dual Zangetsu','true_zangetsu',14,0),('mugetsu','FINAL GETSUGA · MUGETSU','mugetsu_blade',20,400)]
 fn('select','\n'.join([f'execute if score @s ichigo matches {i} run function ichigo:form/{name}' for i,(name,*_) in enumerate(forms,1)]+['execute if score @s ichigo matches 7 run function ichigo:off','execute if score @s ichigo matches 8.. run function ichigo:menu']))
 buttons=[{'text':'[ '+label+' ]\n','color':'aqua' if i<3 else 'red','click_event':{'action':'run_command','command':f'/trigger ichigo set {i}'}} for i,(_,label,*_) in enumerate(forms,1)]
@@ -255,35 +276,35 @@ execute if predicate ichigo:sprinting run return run function ichigo:skill/speci
 function ichigo:skill/getsuga''')
 fn('no_energy','title @s actionbar {"text":"พลังวิญญาณไม่พอ — รอให้ฟื้น","color":"red"}')
 fn('cooldown','title @s actionbar {"text":"ท่ายังอยู่ในคูลดาวน์","color":"gold"}')
-fn('skill/getsuga','''execute if score @s ig.cool matches 1.. run return run function ichigo:cooldown
-execute if score @s ig.energy matches ..11 run return run function ichigo:no_energy
-scoreboard players remove @s ig.energy 12
-scoreboard players set @s ig.cool 20
+fn('skill/getsuga','''execute unless score #nocd ig.cool matches 1 if score @s ig.cool matches 1.. run return run function ichigo:cooldown
+execute unless score #unlimited ig.energy matches 1 if score @s ig.energy matches ..11 run return run function ichigo:no_energy
+execute unless score #unlimited ig.energy matches 1 run scoreboard players remove @s ig.energy 12
+execute unless score #nocd ig.cool matches 1 run scoreboard players set @s ig.cool 20
 scoreboard players set #kind ig.kind 1
 function ichigo:projectile/spawn
 playsound ichigo:slash player @a[distance=..48] ~ ~ ~ 1 1''')
-fn('skill/special','''execute if score @s ig.cool matches 1.. run return run function ichigo:cooldown
-execute if score @s ig.energy matches ..24 run return run function ichigo:no_energy
-scoreboard players remove @s ig.energy 25
-scoreboard players set @s ig.cool 60
+fn('skill/special','''execute unless score #nocd ig.cool matches 1 if score @s ig.cool matches 1.. run return run function ichigo:cooldown
+execute unless score #unlimited ig.energy matches 1 if score @s ig.energy matches ..24 run return run function ichigo:no_energy
+execute unless score #unlimited ig.energy matches 1 run scoreboard players remove @s ig.energy 25
+execute unless score #nocd ig.cool matches 1 run scoreboard players set @s ig.cool 60
 scoreboard players set #kind ig.kind 2
 execute if score @s ig.form matches 4 run scoreboard players set #kind ig.kind 3
 function ichigo:projectile/spawn
 playsound ichigo:cero player @a[distance=..48] ~ ~ ~ 1 1''')
-fn('skill/ultimate','''execute if score @s ig.ult matches 1.. run return run function ichigo:cooldown
-execute if score @s ig.energy matches ..59 run return run function ichigo:no_energy
-scoreboard players remove @s ig.energy 60
-scoreboard players set @s ig.ult 900
-scoreboard players set @s ig.cool 80
+fn('skill/ultimate','''execute unless score #nocd ig.cool matches 1 if score @s ig.ult matches 1.. run return run function ichigo:cooldown
+execute unless score #unlimited ig.energy matches 1 if score @s ig.energy matches ..59 run return run function ichigo:no_energy
+execute unless score #unlimited ig.energy matches 1 run scoreboard players remove @s ig.energy 60
+execute unless score #nocd ig.cool matches 1 run scoreboard players set @s ig.ult 900
+execute unless score #nocd ig.cool matches 1 run scoreboard players set @s ig.cool 80
 scoreboard players set #kind ig.kind 4
 function ichigo:projectile/spawn
 title @s title {"text":"月牙天衝","color":"dark_red","bold":true}
 playsound ichigo:mugetsu player @a[distance=..64] ~ ~ ~ 1 1
 execute if score @s ig.form matches 6 run scoreboard players set @s ig.formtime 50''')
-fn('skill/shunpo','''execute if score @s ig.dash matches 1.. run return run function ichigo:cooldown
-execute if score @s ig.energy matches ..7 run return run function ichigo:no_energy
-scoreboard players remove @s ig.energy 8
-scoreboard players set @s ig.dash 16
+fn('skill/shunpo','''execute unless score #nocd ig.cool matches 1 if score @s ig.dash matches 1.. run return run function ichigo:cooldown
+execute unless score #unlimited ig.energy matches 1 if score @s ig.energy matches ..7 run return run function ichigo:no_energy
+execute unless score #unlimited ig.energy matches 1 run scoreboard players remove @s ig.energy 8
+execute unless score #nocd ig.cool matches 1 run scoreboard players set @s ig.dash 16
 playsound ichigo:shunpo player @a[distance=..32] ~ ~ ~ .8 1
 particle minecraft:poof ~ ~1 ~ .3 .7 .3 .02 12 normal @a[distance=..32]
 scoreboard players set #step ig.age 0

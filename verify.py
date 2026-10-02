@@ -28,6 +28,21 @@ for p in (root/'dist').glob('*.zip'):
         assert z.testzip() is None
         assert 'pack.mcmeta' in z.namelist()
 
+# Catch missing frames, blank alpha, frozen animation and accidental opaque cards.
+for name in ('getsuga','blue_getsuga'):
+    p=rp/f'assets/ichigo/textures/item/{name}.png'
+    sheet=Image.open(p).convert('RGBA')
+    assert sheet.size==(512,4096)
+    meta=json.loads(p.with_suffix('.png.mcmeta').read_text())
+    assert meta['animation']['frametime']==1
+    frames=[sheet.crop((0,i*512,512,(i+1)*512)) for i in range(8)]
+    assert len({im.tobytes() for im in frames})==8, 'Frozen animation'
+    for im in frames:
+        alpha=im.getchannel('A')
+        assert alpha.getextrema()==(0,255)
+        bbox=alpha.getbbox()
+        assert bbox and 0<bbox[0]<bbox[2]<512 and 0<bbox[1]<bbox[3]<512,'Clipped artwork'
+
 # Geometry preview: this is an asset preview, not a screenshot from Minecraft.
 palette=[(13,15,23),(34,38,51),(193,211,220),(248,247,232),(182,21,42),(245,59,73),(204,153,64),(73,196,246),(236,126,39),(80,84,99),(121,20,39),(255,255,255)]
 im=Image.new('RGB',(1400,980),(21,24,33));d=ImageDraw.Draw(im)

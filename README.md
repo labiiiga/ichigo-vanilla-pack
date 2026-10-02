@@ -30,6 +30,10 @@
 - อยู่กลางอากาศ + คลิกขวา: คลื่นไม้ตาย (60 พลัง / 45 วินาที)
 - พลังวิญญาณสูงสุด 100 ฟื้น 2 ต่อวินาที
 
+เซิร์ฟนี้เปิดสตามิน่าไม่จำกัดและไม่มีคูลดาวน์ไว้แล้ว ค่าด้านบนเป็นค่าปกติเมื่อปิดโหมดทดสอบ
+ผู้ดูแลตั้งค่าได้ด้วย `scoreboard players set #unlimited ig.energy 1`
+และ `scoreboard players set #nocd ig.cool 1` (ใช้ 0 เพื่อคืนค่าปกติ)
+
 ท่าโจมตีเฉพาะรายชื่อมอนสเตอร์ในแท็ก `ichigo:targets` ไม่โดนผู้เล่น สัตว์เลี้ยง หรือบล็อก
 Hollow/Vasto กลับ Bankai เมื่อหมดเวลา ส่วน Mugetsu คืนอุปกรณ์เดิม
 ท่าไม่ได้เปลี่ยนกฎ PvP ปกติของเซิร์ฟเวอร์: การตีด้วยดาบยังเป็นการโจมตีปกติของเกม
@@ -37,6 +41,10 @@ Hollow/Vasto กลับ Bankai เมื่อหมดเวลา ส่ว�
 ## ขอบเขต v1
 
 ดาบ หน้ากาก ผม/ผ้าพันหน้า และคลื่นโจมตีเป็นโมเดล JSON 3D ของ vanilla
+ตั้งแต่ v0.2.0 Getsuga แดงดำและสีฟ้าใช้ mesh โค้งที่สร้างใน Blender
+แล้ว bake เป็นเท็กซ์เจอร์โปร่งใส 8 เฟรม ซ้อนการ์ดบาง 3 ชั้นในโมเดล vanilla
+เป็นเอฟเฟกต์ 2.5D มีข้อจำกัดเมื่อมองด้านข้าง ไม่ใช่การโหลด mesh Blender เข้าเกมโดยตรง
+Jujisho, Cero, Mugetsu และอุปกรณ์อื่นยังใช้โมเดลรุ่นเดิม
 ชุดลำตัวใช้เท็กซ์เจอร์อุปกรณ์ตามโครงเกราะ vanilla ไม่ใช่โมเดลเสื้อผ้าที่ขยับอิสระ
 ยังไม่มีแอนิเมชันกระดูกตัวผู้เล่นแบบอนิเมะหรือเสียงพากย์ตัวละคร
 Vasto/Mugetsu เป็นการตีความรูปลักษณ์ด้วยข้อจำกัดของ resource pack
@@ -53,7 +61,7 @@ Vasto/Mugetsu เป็นการตีความรูปลักษณ์
 โฮสต์ resource pack ZIP บน URL HTTPS ที่โหลดไฟล์โดยตรง และตั้งใน `server.properties`:
 
 ```properties
-resource-pack=https://github.com/labiiiga/ichigo-vanilla-pack/releases/download/v0.1.1/Ichigo-26.2-resourcepack.zip
+resource-pack=https://github.com/labiiiga/ichigo-vanilla-pack/releases/download/v0.2.0/Ichigo-26.2-resourcepack.zip
 resource-pack-sha1=<ค่าจาก dist/resourcepack.sha1>
 require-resource-pack=true
 resource-pack-prompt={"text":"Ichigo: ดาวน์โหลดดาบ 3D ชุดและเอฟเฟกต์เพื่อเล่นบนเซิร์ฟนี้","color":"aqua"}
@@ -70,6 +78,19 @@ Python 3.12 + Pillow + FFmpeg:
 py -3.12 build.py
 py -3.12 verify.py
 ```
+
+ไฟล์ Blender ที่แก้ไขต่อได้: `art/getsuga.blend` (Blender 5.2.2)
+ต้นฉบับสร้างด้วย `art/create_getsuga.py` ใน Blender; bake ใหม่ด้วย:
+
+```text
+blender -b art/getsuga.blend --python art/bake_getsuga.py
+py -3.12 build.py
+py -3.12 verify.py
+py -3.12 art/preview_getsuga.py
+```
+
+เฟรมที่ bake แล้วอยู่ใน `art/frames` จึง build แพ็กได้โดยไม่ต้องเปิด Blender
+`dist/getsuga-preview.png` และ GIF เป็นภาพจาก Blender ไม่ใช่ภาพในเกม
 
 `dist/asset-preview.png` เป็นภาพพรีวิว geometry ที่เรนเดอร์นอกเกม ไม่ใช่ภาพจาก Minecraft
 การตรวจอัตโนมัติครอบคลุม JSON, geometry bounds, ลิงก์เท็กซ์เจอร์/อุปกรณ์ และ ZIP integrity
