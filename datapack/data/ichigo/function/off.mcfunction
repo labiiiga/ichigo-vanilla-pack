@@ -1,4 +1,6 @@
 execute unless entity @s[tag=ig.active] run return 0
+function ichigo:fx/cleanup
+scoreboard players set @s ig.tx 0
 function ichigo:find_locker
 execute in minecraft:overworld if entity @e[tag=ig.selected,limit=1] run item replace entity @s armor.head from entity @e[tag=ig.selected,limit=1] armor.head
 execute in minecraft:overworld if entity @e[tag=ig.selected,limit=1] run item replace entity @s armor.chest from entity @e[tag=ig.selected,limit=1] armor.chest

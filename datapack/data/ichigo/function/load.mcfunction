@@ -15,3 +15,12 @@ scoreboard objectives add ichigo trigger
 scoreboard objectives add ig.use minecraft.used:minecraft.carrot_on_a_stick
 scoreboard players add #next ig.id 0
 forceload add 0 0
+
+scoreboard objectives add ig.tx dummy
+scoreboard objectives add ig.fxage dummy
+scoreboard objectives add ig.life dummy
+scoreboard objectives add ig.fx dummy
+scoreboard objectives add ig.clock dummy
+scoreboard objectives add ig.combo dummy
+scoreboard objectives add ig.gen dummy
+scoreboard players set #clock ig.clock 0

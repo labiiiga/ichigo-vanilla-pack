@@ -4,5 +4,8 @@ execute unless score #unlimited ig.energy matches 1 run scoreboard players remov
 execute unless score #nocd ig.cool matches 1 run scoreboard players set @s ig.cool 60
 scoreboard players set #kind ig.kind 2
 execute if score @s ig.form matches 4 run scoreboard players set #kind ig.kind 3
+function ichigo:fx/attack
 function ichigo:projectile/spawn
 playsound ichigo:cero player @a[distance=..48] ~ ~ ~ 1 1
+
+execute if score @s ig.form matches 5 run swing @s offhand

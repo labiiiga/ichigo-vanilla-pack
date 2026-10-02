@@ -14,6 +14,10 @@ item replace entity @s armor.chest with leather_chestplate[custom_data={ichigo:"
 item replace entity @s armor.legs with leather_leggings[custom_data={ichigo:"gear"},unbreakable={},enchantments={binding_curse:1,vanishing_curse:1},equippable={slot:"legs",asset_id:"ichigo:mugetsu"}]
 item replace entity @s armor.feet with leather_boots[custom_data={ichigo:"gear"},unbreakable={},enchantments={binding_curse:1,vanishing_curse:1},equippable={slot:"feet",asset_id:"ichigo:mugetsu"}]
 item replace entity @s armor.head with carved_pumpkin[item_model="ichigo:mugetsu_head",custom_data={ichigo:"gear"},equippable={slot:"head"},enchantments={binding_curse:1,vanishing_curse:1}]
-title @s title {"text": "FINAL GETSUGA · MUGETSU", "color": "dark_red", "bold": true}
-playsound ichigo:transform player @a[distance=..48] ~ ~ ~ .8 1
-particle minecraft:dust{color:[0.7,0.03,0.1],scale:1.5} ~ ~1 ~ .7 1 .7 .01 35 normal @a[distance=..48]
+title @s times 4 22 10
+title @s title {"text": "MUGETSU", "color": "dark_red", "bold": true}
+title @s subtitle {"text":"REIATSU RELEASE","color":"white"}
+scoreboard players set @s ig.tx 32
+function ichigo:fx/attach_mugetsu
+function ichigo:fx/pulse_mugetsu
+playsound ichigo:charge player @a[distance=..48] ~ ~ ~ .7 0.85

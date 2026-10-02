@@ -1,6 +1,1 @@
-{
-  "model": {
-    "type": "minecraft:model",
-    "model": "ichigo:item/jujisho"
-  }
-}
+{"model": {"type": "minecraft:model", "model": "ichigo:item/jujisho"}}

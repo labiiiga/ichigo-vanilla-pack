@@ -364,6 +364,11 @@ kill @s''')
 overlay=Image.new('RGBA',(16,16),(0,0,0,0));p=RP/'assets/minecraft/textures/misc/pumpkinblur.png';p.parent.mkdir(parents=True,exist_ok=True);overlay.save(p)
 icon=Image.new('RGB',(128,128),(13,15,23));d=ImageDraw.Draw(icon);d.ellipse((10,10,118,118),outline=(192,26,48),width=7);d.line((43,104,89,19),fill=(242,238,224),width=9);d.line((38,89,68,100),fill=(192,26,48),width=6);icon.save(RP/'pack.png')
 
+import cinematic_assets, cinematic_runtime, cinematic_audio
+cinematic_assets.build(RP)
+cinematic_runtime.build(DP,fn)
+cinematic_audio.build(RP,OUT)
+
 for root,name in [(RP,'Ichigo-26.2-resourcepack.zip'),(DP,'Ichigo-26.2-datapack.zip')]:
     path=OUT/name
     with zipfile.ZipFile(path,'w',zipfile.ZIP_DEFLATED) as z:

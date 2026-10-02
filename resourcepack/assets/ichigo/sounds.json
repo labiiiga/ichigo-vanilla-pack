@@ -1,5 +1,6 @@
 {
   "slash": {
+    "subtitle": "ichigo.subtitle.slash",
     "sounds": [
       {
         "name": "ichigo:slash",
@@ -8,6 +9,7 @@
     ]
   },
   "shunpo": {
+    "subtitle": "ichigo.subtitle.shunpo",
     "sounds": [
       {
         "name": "ichigo:shunpo",
@@ -15,7 +17,26 @@
       }
     ]
   },
+  "charge": {
+    "subtitle": "ichigo.subtitle.charge",
+    "sounds": [
+      {
+        "name": "ichigo:charge",
+        "volume": 0.8
+      }
+    ]
+  },
+  "release": {
+    "subtitle": "ichigo.subtitle.release",
+    "sounds": [
+      {
+        "name": "ichigo:release",
+        "volume": 0.8
+      }
+    ]
+  },
   "transform": {
+    "subtitle": "ichigo.subtitle.transform",
     "sounds": [
       {
         "name": "ichigo:transform",
@@ -24,6 +45,7 @@
     ]
   },
   "mugetsu": {
+    "subtitle": "ichigo.subtitle.mugetsu",
     "sounds": [
       {
         "name": "ichigo:mugetsu",
@@ -32,9 +54,19 @@
     ]
   },
   "cero": {
+    "subtitle": "ichigo.subtitle.cero",
     "sounds": [
       {
         "name": "ichigo:cero",
+        "volume": 0.8
+      }
+    ]
+  },
+  "impact": {
+    "subtitle": "ichigo.subtitle.impact",
+    "sounds": [
+      {
+        "name": "ichigo:impact",
         "volume": 0.8
       }
     ]

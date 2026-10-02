@@ -2,3 +2,6 @@ reference/
 __pycache__/
 *.wav
 *.blend1
+.test-server/
+.test-client/
+/logs/

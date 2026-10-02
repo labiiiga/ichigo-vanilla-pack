@@ -63,12 +63,15 @@ for index,name in enumerate(names):
     faces=[]
     for e in data['elements']:
         a,b=e['from'],e['to'];x0,y0,z0=a;x1,y1,z1=b
-        uv=e['faces']['north']['uv'];pi=int(uv[0]//4)+4*int(uv[1]//4);color=palette[pi]
+        uv=e['faces']['north']['uv'];pi=int(uv[0]//4)+4*int(uv[1]//4)
+        from cinematic_assets import PALETTE
+        color=(PALETTE if data['textures'].get('palette','').endswith('cinematic_palette') else palette)[pi]
         for factor,vertices in [(1,[(x0,y0,z0),(x1,y0,z0),(x1,y1,z0),(x0,y1,z0)]),(.65,[(x1,y0,z0),(x1,y0,z1),(x1,y1,z1),(x1,y1,z0)]),(1.18,[(x0,y1,z0),(x1,y1,z0),(x1,y1,z1),(x0,y1,z1)])]:
             if 'rotation' in e:
                 rotation=e['rotation'];ox,oy,oz=rotation['origin'];t=math.radians(rotation['angle'])
-                assert rotation['axis']=='z'
-                vertices=[(ox+(x-ox)*math.cos(t)-(y-oy)*math.sin(t),oy+(x-ox)*math.sin(t)+(y-oy)*math.cos(t),z) for x,y,z in vertices]
+                if rotation['axis']=='z':vertices=[(ox+(x-ox)*math.cos(t)-(y-oy)*math.sin(t),oy+(x-ox)*math.sin(t)+(y-oy)*math.cos(t),z) for x,y,z in vertices]
+                elif rotation['axis']=='y':vertices=[(ox+(x-ox)*math.cos(t)+(z-oz)*math.sin(t),y,oz-(x-ox)*math.sin(t)+(z-oz)*math.cos(t)) for x,y,z in vertices]
+                else:vertices=[(x,oy+(y-oy)*math.cos(t)-(z-oz)*math.sin(t),oz+(y-oy)*math.sin(t)+(z-oz)*math.cos(t)) for x,y,z in vertices]
             depth=sum(v[2]-v[0]*.2-v[1]*.02 for v in vertices)/4
             faces.append((depth,[proj(v) for v in vertices],tuple(min(255,int(c*factor)) for c in color)))
     points=[point for _,verts,_ in faces for point in verts]
