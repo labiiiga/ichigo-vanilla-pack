@@ -6,8 +6,8 @@ import json, math, random
 from pathlib import Path
 
 PALETTE=[(9,11,19),(31,38,53),(151,169,184),(238,235,217),(149,7,31),(255,39,64),(219,170,82),(42,184,255),(235,104,24),(65,77,98),(58,4,21),(239,251,255), (77,21,120),(164,77,244),(15,70,129),(118,228,255)]
-FORMS=['shikai','bankai','hollow','vasto','true','mugetsu']
-ACCENTS=[7,5,5,8,15,13]
+FORMS=['shikai','bankai','hollow','vasto','true','mugetsu','naruto']
+ACCENTS=[7,5,5,8,15,13,8]
 
 def build(rp):
     from PIL import Image, ImageDraw
@@ -157,12 +157,15 @@ def build(rp):
             if layer=='humanoid':
                 for x in range(80,112):
                     k=int(7+8*(.5+.5*math.sin((x-80)*.64)))
-                    color=(k,k+2,k+8,255) if form!='vasto' else (214+k,211+k,200+k,255)
+                    color=(255-k,112-k,21,255) if form=='naruto' else (k,k+2,k+8,255) if form!='vasto' else (214+k,211+k,200+k,255)
                     d.line((x,82,x,111),fill=color)
-                d.line([(80,80),(95,103),(110,80)],fill=(237,232,220,255),width=3)
-                d.line([(82,82),(95,101),(108,82)],fill=(83,90,108,255),width=1)
-                d.rectangle((80,112,111,119),fill=(218,216,207,255))
-                d.line((80,115,111,115),fill=(123,130,141,255))
+                d.line([(80,80),(95,103),(110,80)],fill=(49,99,173,255) if form=='naruto' else (237,232,220,255),width=3)
+                d.line([(82,82),(95,101),(108,82)],fill=(28,53,95,255) if form=='naruto' else (83,90,108,255),width=1)
+                d.rectangle((80,112,111,119),fill=(49,99,173,255) if form=='naruto' else (218,216,207,255))
+                d.line((80,115,111,115),fill=(22,43,82,255) if form=='naruto' else (123,130,141,255))
+                if form=='naruto':
+                    d.ellipse((103,89,109,95),outline=(255,196,83,255),width=2)
+                    d.ellipse((104,90,108,94),outline=(49,99,173,255),width=1)
                 if form=='vasto':
                     d.ellipse((91,87,102,100),fill=(4,5,9,255),outline=(113,9,25,255),width=2)
                 if form=='mugetsu':

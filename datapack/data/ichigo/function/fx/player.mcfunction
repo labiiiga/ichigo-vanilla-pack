@@ -5,6 +5,7 @@ execute unless entity @e[type=item_display,tag=ig.owned] if score @s ig.form mat
 execute unless entity @e[type=item_display,tag=ig.owned] if score @s ig.form matches 4 run function ichigo:fx/attach_vasto
 execute unless entity @e[type=item_display,tag=ig.owned] if score @s ig.form matches 5 run function ichigo:fx/attach_true
 execute unless entity @e[type=item_display,tag=ig.owned] if score @s ig.form matches 6 run function ichigo:fx/attach_mugetsu
+execute unless entity @e[type=item_display,tag=ig.owned] if score @s ig.form matches 7 run function ichigo:fx/attach_naruto
 function ichigo:fx/find_owned
 execute rotated ~ 0 run tp @e[type=item_display,tag=ig.owned] ~ ~ ~ ~ 0
 execute if score #clock ig.clock matches 0 run data merge entity @e[type=item_display,tag=ig.owned,tag=ig.aura,limit=1] {start_interpolation:0,interpolation_duration:4,transformation:{left_rotation:[0f,0.00000f,0f,1.00000f]}}
@@ -54,3 +55,10 @@ execute if score @s ig.form matches 6 if score @s ig.tx matches 18 run function 
 execute if score @s ig.form matches 6 if score @s ig.tx matches 12 run function ichigo:fx/burst_mugetsu
 execute if score @s ig.form matches 6 if score @s ig.tx matches 6 run function ichigo:fx/pulse_mugetsu
 execute if score @s ig.form matches 6 if score #clock ig.clock matches 0 run function ichigo:fx/pulse_mugetsu
+execute if score @s ig.form matches 7 if score @s ig.tx matches 24 run function ichigo:fx/pulse_naruto
+execute if score @s ig.form matches 7 if score @s ig.tx matches 18 run function ichigo:fx/pulse_naruto
+execute if score @s ig.form matches 7 if score @s ig.tx matches 12 run function ichigo:fx/burst_naruto
+execute if score @s ig.form matches 7 if score @s ig.tx matches 6 run function ichigo:fx/pulse_naruto
+execute if score @s ig.form matches 7 if score #clock ig.clock matches 0 run function ichigo:fx/pulse_naruto
+execute if score @s ig.form matches 7 run particle minecraft:dust{color:[0.95,0.42,0.08],scale:1.0} ~ ~1 ~ .3 .65 .3 .01 2 normal @a[distance=..40]
+execute if score @s ig.form matches 7 run particle minecraft:dust{color:[0.19,0.42,1.0],scale:0.75} ~ ~1 ~ .25 .5 .25 .01 1 normal @a[distance=..40]

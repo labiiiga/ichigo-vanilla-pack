@@ -19,7 +19,10 @@ execute if score #clock ig.clock matches 64.. run scoreboard players set #clock 
 execute as @a[tag=ig.active,nbt=!{Health:0.0f}] at @s run function ichigo:fx/player
 execute in minecraft:overworld as @e[type=item_display,tag=ig.fx] at @s run function ichigo:fx/tick
 execute in minecraft:overworld as @e[type=item_display,tag=ig.attached] at @s run function ichigo:fx/check_owner
+execute in minecraft:overworld as @e[type=armor_stand,tag=ig.clone] at @s run function ichigo:skill/clone_tick
 execute in minecraft:the_nether as @e[type=item_display,tag=ig.fx] at @s run function ichigo:fx/tick
 execute in minecraft:the_nether as @e[type=item_display,tag=ig.attached] at @s run function ichigo:fx/check_owner
+execute in minecraft:the_nether as @e[type=armor_stand,tag=ig.clone] at @s run function ichigo:skill/clone_tick
 execute in minecraft:the_end as @e[type=item_display,tag=ig.fx] at @s run function ichigo:fx/tick
 execute in minecraft:the_end as @e[type=item_display,tag=ig.attached] at @s run function ichigo:fx/check_owner
+execute in minecraft:the_end as @e[type=armor_stand,tag=ig.clone] at @s run function ichigo:skill/clone_tick

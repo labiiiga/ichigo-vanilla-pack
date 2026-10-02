@@ -8,3 +8,4 @@ execute if score @s ig.form matches 4 if score @s ig.formtime matches 0 run func
 execute if score @s ig.form matches 3 if score @s ig.formtime matches 0 run function ichigo:form/bankai
 execute unless score #unlimited ig.energy matches 1 run title @s actionbar [{"text":"霊圧 ","color":"aqua"},{"score":{"name":"@s","objective":"ig.energy"}},{"text":"/100  |  คลิก:Getsuga  ย่อ:Shunpo  วิ่ง:ท่าพิเศษ  กระโดด:ไม้ตาย","color":"gray"}]
 execute if score #unlimited ig.energy matches 1 run title @s actionbar [{"text":"霊圧 ∞  |  ","color":"aqua"},{"text":"คลิก:Getsuga  ย่อ:Shunpo  วิ่ง:ท่าพิเศษ  กระโดด:ไม้ตาย","color":"gray"}]
+execute if score @s ig.form matches 7 run title @s actionbar {"text":"NARUTO  |  คลิกขวา: Rasengan  ย่อ+คลิก: พุ่งตัว  วิ่ง+คลิก: แยกร่าง","color":"gold"}

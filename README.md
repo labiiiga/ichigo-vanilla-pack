@@ -1,6 +1,6 @@
-# Ichigo: vanilla fan pack (Java 26.2)
+# Ichigo + Naruto: vanilla fan pack (Java 26.2)
 
-แพ็ก Bleach สำหรับ Java 26.2: ไม่ต้องติดตั้งมอดฝั่งผู้เล่น เพื่อนยอมรับ resource pack ตอนเข้าเซิร์ฟ
+แพ็ก Bleach และ Naruto สำหรับ Java 26.2: ไม่ต้องติดตั้งมอดฝั่งผู้เล่น เพื่อนยอมรับ resource pack ตอนเข้าเซิร์ฟ
 โมเดลและเสียงเอฟเฟกต์เป็นงานสร้างใหม่สำหรับแพ็กนี้
 
 ## เล่น
@@ -21,6 +21,7 @@
 | 6 | Mugetsu (20 วินาที) | ผมและผ้าพันหน้า 3D / ชุดพันแผล |
 | 7 | คืนชุดเดิม | เกราะเดิมถูกเก็บไว้ในตัวเก็บอุปกรณ์แยกตามผู้เล่น |
 | 8 | เมนู | ทุกคนใช้ได้โดยไม่ต้องเป็น OP |
+| 9 | Naruto | ชุดนินจาสีส้ม / ผมทองและที่คาดหน้าผาก 3D / คุไน |
 
 เลือกดาบที่ได้รับขึ้นมาถือในมือหลักก่อนใช้ท่า:
 
@@ -29,6 +30,15 @@
 - วิ่ง + คลิกขวา: Getsuga Jujisho; ร่าง Vasto ใช้ Cero (25 พลัง / 3 วินาที)
 - อยู่กลางอากาศ + คลิกขวา: คลื่นไม้ตาย (60 พลัง / 45 วินาที)
 - พลังวิญญาณสูงสุด 100 ฟื้น 2 ต่อวินาที
+
+โหมด Naruto ใช้คุไนในมือ:
+
+- คลิกขวา: Rasengan พุ่งเป็นลูกพลังโจมตีมอนสเตอร์
+- ย่อ + คลิกขวา: พุ่งตัวแบบ Shunpo
+- วิ่ง + คลิกขวา: Kage Bunshin เรียกร่างแยก 3 ร่าง มีควัน ท่าประสานมือ/พุ่งเข้าฟัน และโจมตีมอนสเตอร์ใกล้ตัว
+- ร่างแยกอยู่ประมาณ 2 วินาทีแล้วสลายเป็นควัน
+
+เลือก Naruto ด้วย `/trigger ichigo set 9`; คืนชุดเดิมด้วย `/trigger ichigo set 7` และเปิดเมนูด้วย `/trigger ichigo set 8`.
 
 เซิร์ฟนี้เปิดสตามิน่าไม่จำกัดและไม่มีคูลดาวน์ไว้แล้ว ค่าด้านบนเป็นค่าปกติเมื่อปิดโหมดทดสอบ
 ผู้ดูแลตั้งค่าได้ด้วย `scoreboard players set #unlimited ig.energy 1`
@@ -49,6 +59,10 @@ Hollow/Vasto กลับ Bankai เมื่อหมดเวลา ส่ว�
 ระบบเปลี่ยนร่างให้ดาบเข้า inventory จึงควรเหลือช่องว่าง 2 ช่อง
 อย่าแก้ไข/ถอดชุดขณะเปลี่ยนร่างด้วย creative หรือคำสั่งของมอดอื่น
 
+ร่าง Naruto ใช้อุปกรณ์หัวและเสื้อเกราะ 3D/texture ของ resource pack ซ้อนบนโมเดลผู้เล่น
+ส่วนร่างแยกใช้อาร์เมอร์สแตนด์ที่ซ่อนโครงและแสดงชุด/ผม Naruto เพื่อรักษาหน้าตาแบบผู้เล่น Minecraft
+คำสั่งวานิลลาขยับท่าร่างหลักได้จำกัด; ร่างแยกจึงเล่นท่าประสานมือ พุ่ง และฟันเป็นช่วงสั้น ๆ
+
 ตัวเก็บอุปกรณ์เป็น armor stand มองไม่เห็นใน overworld ที่ 0,-61,0
 มี forceload 1 chunk เพื่อคืนเกราะได้แม้ผู้เล่นเปลี่ยนมิติ
 ปิดร่างของทุกคนก่อนเอา datapack ออก เพื่อให้ชุดเดิมคืนครบ
@@ -59,10 +73,10 @@ Hollow/Vasto กลับ Bankai เมื่อหมดเวลา ส่ว�
 โฮสต์ resource pack ZIP บน URL HTTPS ที่โหลดไฟล์โดยตรง และตั้งใน `server.properties`:
 
 ```properties
-resource-pack=https://github.com/labiiiga/ichigo-vanilla-pack/releases/download/v0.3.0/Ichigo-26.2-resourcepack.zip
+resource-pack=https://github.com/labiiiga/ichigo-vanilla-pack/releases/download/v0.4.0/Ichigo-26.2-resourcepack.zip
 resource-pack-sha1=<ค่าจาก dist/resourcepack.sha1>
 require-resource-pack=true
-resource-pack-prompt={"text":"Ichigo: ดาวน์โหลดดาบ 3D ชุดและเอฟเฟกต์เพื่อเล่นบนเซิร์ฟนี้","color":"aqua"}
+resource-pack-prompt={"text":"Ichigo + Naruto: ดาวน์โหลดชุด อาวุธ และเอฟเฟกต์ 3D เพื่อเล่นบนเซิร์ฟนี้","color":"aqua"}
 ```
 
 รีสตาร์ตเซิร์ฟเวอร์ให้การตั้งค่า resource pack มีผล

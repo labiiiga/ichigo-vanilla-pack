@@ -13,3 +13,5 @@ execute if score @s ig.form matches 5 rotated ~ 0 positioned ^ ^ ^.5 run functio
 execute if score @s ig.form matches 5 if score @s ig.combo matches 0 rotated ~ 0 positioned ^.45 ^ ^-.35 run function ichigo:fx/ghost_true
 execute if score @s ig.form matches 6 rotated ~ 0 positioned ^ ^ ^.5 run function ichigo:fx/slash_mugetsu
 execute if score @s ig.form matches 6 if score @s ig.combo matches 0 rotated ~ 0 positioned ^.45 ^ ^-.35 run function ichigo:fx/ghost_mugetsu
+execute if score @s ig.form matches 7 rotated ~ 0 positioned ^ ^ ^.5 run function ichigo:fx/slash_naruto
+execute if score @s ig.form matches 7 if score @s ig.combo matches 0 rotated ~ 0 positioned ^.45 ^ ^-.35 run function ichigo:fx/ghost_naruto

@@ -20,8 +20,8 @@ def fn(name, commands):
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(commands.strip() + '\n', encoding='utf-8')
 
-js(RP, 'pack.mcmeta', {'pack': {'description': 'ICHIGO | Zangetsu - original fan pack | Java 26.2', 'min_format': [88,0], 'max_format': [88,0]}})
-js(DP, 'pack.mcmeta', {'pack': {'description': 'ICHIGO | Six forms / multiplayer skills | Java 26.2', 'min_format': [107,1], 'max_format': [107,1]}})
+js(RP, 'pack.mcmeta', {'pack': {'description': 'ICHIGO + NARUTO | original fan pack | Java 26.2', 'min_format': [88,0], 'max_format': [88,0]}})
+js(DP, 'pack.mcmeta', {'pack': {'description': 'ICHIGO + NARUTO | transformations / multiplayer skills | Java 26.2', 'min_format': [107,1], 'max_format': [107,1]}})
 js(DP, 'data/minecraft/tags/function/load.json', {'values':['ichigo:load']})
 js(DP, 'data/minecraft/tags/function/tick.json', {'values':['ichigo:tick']})
 for name, flag in [('sneaking','is_sneaking'),('sprinting','is_sprinting'),('ground','is_on_ground')]:
@@ -31,7 +31,7 @@ js(DP, 'data/ichigo/tags/entity_type/targets.json', {'values': ['minecraft:'+n f
 
 # All cubes are editable vanilla JSON geometry. A palette atlas gives every face
 # intentional colors without borrowing Minecraft/anime textures.
-palette = [(13,15,23),(34,38,51),(193,211,220),(248,247,232),(182,21,42),(245,59,73),(204,153,64),(73,196,246),(236,126,39),(80,84,99),(121,20,39),(255,255,255)]
+palette = [(13,15,23),(34,38,51),(193,211,220),(248,247,232),(182,21,42),(245,59,73),(204,153,64),(73,196,246),(236,126,39),(80,84,99),(121,20,39),(255,255,255),(242,153,50),(255,196,83),(211,154,111),(49,99,173)]
 atlas=Image.new('RGBA',(64,64),(0,0,0,0)); draw=ImageDraw.Draw(atlas)
 for i,c in enumerate(palette):
     x=(i%4)*16;y=(i//4)*16
@@ -76,6 +76,7 @@ model('zangetsu', [cube([7,-8,7.3],[9,0,8.7],0),cube([5.2,0,7.3],[10.8,7,8.7],0)
 model('true_zangetsu', [cube([6.5,-7,7.3],[8.5,1,8.7],0),cube([4,1,7.3],[10,24,8.7],0),cube([4,24,7.3],[8,29,8.7],0),cube([9.5,1,7.1],[10.5,24,8.9],3),cube([4,1,7.15],[6,9,8.85],3),cube([6,1,7.1],[8,3,8.9],4)])
 model('true_short', [cube([7,-3,7.3],[9,2,8.7],0),cube([6,2,7.3],[10,16,8.7],0),cube([9.5,2,7.1],[10.5,16,8.9],3),cube([7,16,7.3],[9.5,19,8.7],0)])
 model('mugetsu_blade',katana()+[cube([6.3,y,7],[9.7,y+.7,9],1) for y in range(2,28,3)])
+model('kunai',[cube([7.3,-8,7.3],[8.7,-1,8.7],0),cube([7,-8,7],[9,-7.5,9],2),cube([7.55,-1,7.5],[8.45,1,8.5],2),cube([7,1,7.7],[9,7,8.3],2),cube([7.2,7,7.2],[8.8,12,8.8],3),cube([6.8,11,6.8],[9.2,13,9.2],2)])
 
 # Head geometry surrounds the player's head; head transforms align to item equip.
 # CustomHeadLayer applies a 0.625 equipment scale. Compensate it so a
@@ -99,6 +100,24 @@ def mask(horns=False,mugetsu=False):
     return e
 model('hollow_mask',mask(),head_display);model('vasto_mask',mask(True),head_display);model('mugetsu_head',mask(mugetsu=True),head_display)
 
+# Original Naruto-inspired head overlay: sculpted cheek/head silhouette, layered
+# swept spikes, a blue forehead protector, and a tiny raised leaf plate.
+naruto_head=[cube([3.5,2,3],[12.5,12,13],14),
+             cube([2.5,5,5],[3.7,9,10],14),cube([12.3,5,5],[13.5,9,10],14),
+             cube([4,9.7,2.7],[12,11.5,3.1],15),
+             cube([4,9.1,2.55],[12,10.3,2.8],15),
+             cube([6.5,9.45,2.45],[9.5,10.65,2.6],2),
+             cube([7.15,9.7,2.35],[8.85,10.4,2.5],6),
+             cube([4,10.7,3],[12,13.3,13],13),
+             cube([2.8,8,4],[5.8,11.5,12],13),cube([10.2,8,4],[13.2,11.5,12],13),
+             cube([3,6,5],[5.4,9,11],13),cube([10.6,6,5],[13,9,11],13),
+             cube([4.3,5,7],[6.8,8.6,13],13),cube([9.2,5,7],[11.7,8.6,13],13),
+             cube([5.2,4,10],[7.1,7,14],13),cube([8.9,4,10],[10.8,7,14],13),
+             cube([7,3.6,12],[9,6.5,14],13),
+             cube([4.4,6.5,2.45],[6.1,7.1,2.7],15),cube([9.9,6.5,2.45],[11.6,7.1,2.7],15),
+             cube([7.1,5.1,2.4],[8.9,5.6,2.65],4)]
+model('naruto_head',naruto_head,head_display)
+
 def crescent(color=4,cross=False):
     if cross:
         parts=[]
@@ -116,6 +135,7 @@ def crescent(color=4,cross=False):
     return parts
 for name,c,cross in [('getsuga',4,False),('blue_getsuga',7,False),('jujisho',7,True),('mugetsu_wave',10,False)]:model(name,crescent(c,cross),{'gui':{'scale':[.6,.6,.6]}})
 model('cero', [cube([4,4,4],[12,12,12],4),cube([6,6,2],[10,10,14],5),cube([2,6,6],[14,10,10],5),cube([6,2,6],[10,14,10],3)],{'gui':{'scale':[.65,.65,.65]}})
+model('rasengan',[cube([3,5,5],[13,11,11],15),cube([4,3,6],[12,13,10],7),cube([5,4,3],[11,12,13],11),cube([5,4,5],[11,12,11],7),cube([6,5,4],[10,11,12],11)],{'gui':{'scale':[.8,.8,.8]}})
 
 # Smooth Blender-baked animated ribbons. Vanilla cannot load arbitrary .blend
 # meshes: three close, double-sided cards retain the curved outline and depth.
@@ -137,10 +157,10 @@ for name in ('getsuga','blue_getsuga'):
        'elements':elements,'display':{'gui':{'scale':[.6,.6,.6]}}})
 
 # Original armor painting on the standard 64x32 humanoid atlas.
-for form in ['shikai','bankai','hollow','vasto','true','mugetsu']:
+for form in ['shikai','bankai','hollow','vasto','true','mugetsu','naruto']:
     for layer in ['humanoid','humanoid_leggings']:
         im=Image.new('RGBA',(64,32),(0,0,0,0));d=ImageDraw.Draw(im)
-        base=(15,17,25,255) if form!='vasto' else (235,231,217,255)
+        base=(242,153,50,255) if form=='naruto' and layer=='humanoid' else (236,126,39,255) if form=='naruto' else (15,17,25,255) if form!='vasto' else (235,231,217,255)
         for box in [(16,16,39,31),(40,16,55,31),(0,16,15,31)]:d.rectangle(box,fill=base)
         # Body front 20..27 and back 32..39: kimono collar, fold, obi sash.
         if layer=='humanoid':
@@ -156,6 +176,13 @@ for form in ['shikai','bankai','hollow','vasto','true','mugetsu']:
             if form=='mugetsu':
                 for y in [20,22,24,26]: d.line((20,y,27,y),fill=(102,107,116,255))
                 d.rectangle((20,28,27,31),fill=(9,10,14,255))
+            if form=='naruto':
+                # Orange jacket, dark-blue collar/shoulders and a small spiral crest.
+                d.line([(20,20),(23,23),(27,20)],fill=(49,99,173,255),width=2)
+                d.rectangle((22,24,24,26),fill=(49,99,173,255))
+                d.ellipse((25,23,26,24),outline=(255,196,83,255),width=1)
+                d.rectangle((20,29,27,30),fill=(49,99,173,255))
+                d.rectangle((32,29,39,30),fill=(49,99,173,255))
         else:
             for x in [4,7,12]:d.line((x,20,x,31),fill=(43,46,57,255))
             for y in [29,31]:d.rectangle((0,y,15,y),fill=(228,227,216,255))
@@ -194,7 +221,7 @@ scoreboard players set @s ig.ult 0
 scoreboard players set @s ig.formtime 0
 scoreboard players set @s ig.dead 0
 tag @s add ig.init
-tellraw @s {"text":"[ICHIGO] พิมพ์ /trigger ichigo set 8 เพื่อเลือกดาบและร่าง","color":"aqua"}''')
+tellraw @s {"text":"[ICHIGO + NARUTO] พิมพ์ /trigger ichigo set 8 เพื่อเปิดเมนูร่าง","color":"aqua"}''')
 fn('tick','''execute as @a[tag=!ig.init] run function ichigo:init
 execute as @a[scores={ig.dead=1..},tag=ig.active] unless entity @s[nbt={Health:0.0f}] at @s run function ichigo:off
 execute as @a[scores={ig.dead=1..}] unless entity @s[nbt={Health:0.0f}] run scoreboard players set @s ig.dead 0
@@ -219,12 +246,16 @@ execute if score @s ig.form matches 6 if score @s ig.formtime matches 0 run func
 execute if score @s ig.form matches 4 if score @s ig.formtime matches 0 run function ichigo:form/bankai
 execute if score @s ig.form matches 3 if score @s ig.formtime matches 0 run function ichigo:form/bankai
 execute if score @s ig.form matches 2.. run particle minecraft:dust{color:[0.15,0.03,0.07],scale:0.8} ~ ~1 ~ .25 .6 .25 0 1 normal @a[distance=..40]
+execute if score @s ig.form matches 7 run particle minecraft:dust{color:[0.95,0.42,0.08],scale:1.0} ~ ~1 ~ .3 .65 .3 .01 2 normal @a[distance=..40]
+execute if score @s ig.form matches 7 run particle minecraft:dust{color:[0.19,0.42,1.0],scale:0.75} ~ ~1 ~ .25 .5 .25 .01 1 normal @a[distance=..40]
 execute unless score #unlimited ig.energy matches 1 run title @s actionbar [{"text":"霊圧 ","color":"aqua"},{"score":{"name":"@s","objective":"ig.energy"}},{"text":"/100  |  คลิก:Getsuga  ย่อ:Shunpo  วิ่ง:ท่าพิเศษ  กระโดด:ไม้ตาย","color":"gray"}]
-execute if score #unlimited ig.energy matches 1 run title @s actionbar [{"text":"霊圧 ∞  |  ","color":"aqua"},{"text":"คลิก:Getsuga  ย่อ:Shunpo  วิ่ง:ท่าพิเศษ  กระโดด:ไม้ตาย","color":"gray"}]''')
-forms=[('shikai','SHIKAI · Zangetsu','zangetsu',8,0),('bankai','BANKAI · Tensa Zangetsu','tensa_zangetsu',12,0),('hollow','HOLLOW MASK','hollow_zangetsu',15,1200),('vasto','VASTO LORDE','hollow_zangetsu',18,600),('true','TRUE SHIKAI · Dual Zangetsu','true_zangetsu',14,0),('mugetsu','FINAL GETSUGA · MUGETSU','mugetsu_blade',20,400)]
-fn('select','\n'.join([f'execute if score @s ichigo matches {i} run function ichigo:form/{name}' for i,(name,*_) in enumerate(forms,1)]+['execute if score @s ichigo matches 7 run function ichigo:off','execute if score @s ichigo matches 8.. run function ichigo:menu']))
-buttons=[{'text':'[ '+label+' ]\n','color':'aqua' if i<3 else 'red','click_event':{'action':'run_command','command':f'/trigger ichigo set {i}'}} for i,(_,label,*_) in enumerate(forms,1)]
-buttons += [{'text':'[ คืนชุดเดิม / ยกเลิกร่าง ]\n','color':'gray','click_event':{'action':'run_command','command':'/trigger ichigo set 7'}},{'text':'คลิกขวา=Getsuga | ย่อ+คลิก=Shunpo | วิ่ง+คลิก=ท่าพิเศษ | กระโดด+คลิก=ไม้ตาย\nHollow 60 วินาที / Vasto 30 วินาที / Mugetsu 20 วินาที\nท่าโจมตีเฉพาะมอนสเตอร์ ไม่ทำลายบล็อก','color':'white'}]
+execute if score #unlimited ig.energy matches 1 run title @s actionbar [{"text":"霊圧 ∞  |  ","color":"aqua"},{"text":"คลิก:Getsuga  ย่อ:Shunpo  วิ่ง:ท่าพิเศษ  กระโดด:ไม้ตาย","color":"gray"}]
+execute if score @s ig.form matches 7 run title @s actionbar {"text":"NARUTO  |  คลิกขวา: Rasengan  ย่อ+คลิก: พุ่งตัว  วิ่ง+คลิก: แยกร่าง","color":"gold"}''')
+forms=[('shikai','SHIKAI · Zangetsu','zangetsu',8,0),('bankai','BANKAI · Tensa Zangetsu','tensa_zangetsu',12,0),('hollow','HOLLOW MASK','hollow_zangetsu',15,1200),('vasto','VASTO LORDE','hollow_zangetsu',18,600),('true','TRUE SHIKAI · Dual Zangetsu','true_zangetsu',14,0),('mugetsu','FINAL GETSUGA · MUGETSU','mugetsu_blade',20,400),('naruto','NARUTO · SHADOW CLONE','kunai',7,0)]
+form_select=[f'execute if score @s ichigo matches {i if i<7 else 9} run function ichigo:form/{name}' for i,(name,*_) in enumerate(forms,1)]
+fn('select','\n'.join(form_select+['execute if score @s ichigo matches 7 run function ichigo:off','execute if score @s ichigo matches 8 run function ichigo:menu']))
+buttons=[{'text':'[ '+label+' ]\n','color':'gold' if i==7 else 'aqua' if i<3 else 'red','click_event':{'action':'run_command','command':f'/trigger ichigo set {i if i<7 else 9}'}} for i,(_,label,*_) in enumerate(forms,1)]
+buttons += [{'text':'[ คืนชุดเดิม / ยกเลิกร่าง ]\n','color':'gray','click_event':{'action':'run_command','command':'/trigger ichigo set 7'}},{'text':'คลิกขวา=Getsuga | ย่อ+คลิก=Shunpo | วิ่ง+คลิก=ท่าพิเศษ | กระโดด+คลิก=ไม้ตาย\nนารูโตะ: คลิกขวา=Rasengan | วิ่ง+คลิกขวา=แยกร่าง\nHollow 60 วินาที / Vasto 30 วินาที / Mugetsu 20 วินาที\nท่าโจมตีเฉพาะมอนสเตอร์ ไม่ทำลายบล็อก','color':'white'}]
 fn('menu','tellraw @s '+json.dumps(buttons,ensure_ascii=False,separators=(',',':')))
 fn('stash','''execute in minecraft:overworld run summon armor_stand 0 -61 0 {Tags:["ig.locker","ig.new"],Invisible:1b,Marker:1b,Invulnerable:1b,NoGravity:1b,PersistenceRequired:1b}
 execute in minecraft:overworld run scoreboard players operation @e[type=armor_stand,tag=ig.new,limit=1] ig.owner = @s ig.id
@@ -261,6 +292,8 @@ for i,(name,label,blade,damage,duration) in enumerate(forms,1):
     commands += ['attribute @s minecraft:movement_speed modifier remove ichigo:speed','attribute @s minecraft:armor modifier remove ichigo:armor',f'attribute @s minecraft:movement_speed modifier add ichigo:speed {0.12 if i in [3,4] else .05} add_value',f'attribute @s minecraft:armor modifier add ichigo:armor {6+i} add_value']
     for slot,item in [('chest','leather_chestplate'),('legs','leather_leggings'),('feet','leather_boots')]:
         commands.append(f'item replace entity @s armor.{slot} with {item}[custom_data={{ichigo:"gear"}},unbreakable={{}},enchantments={{binding_curse:1,vanishing_curse:1}},equippable={{slot:"{slot}",asset_id:"ichigo:{name}"}}]')
+    if name=='naruto':
+        commands.append('item replace entity @s armor.head with carved_pumpkin[item_model="ichigo:naruto_head",custom_data={ichigo:"gear"},equippable={slot:"head"},enchantments={binding_curse:1,vanishing_curse:1}]')
     if name in ['hollow','vasto','mugetsu']:
         head={'hollow':'hollow_mask','vasto':'vasto_mask','mugetsu':'mugetsu_head'}[name]
         commands.append(f'item replace entity @s armor.head with carved_pumpkin[item_model="ichigo:{head}",custom_data={{ichigo:"gear"}},equippable={{slot:"head"}},enchantments={{binding_curse:1,vanishing_curse:1}}]')
@@ -277,13 +310,23 @@ function ichigo:skill/getsuga''')
 fn('no_energy','title @s actionbar {"text":"พลังวิญญาณไม่พอ — รอให้ฟื้น","color":"red"}')
 fn('cooldown','title @s actionbar {"text":"ท่ายังอยู่ในคูลดาวน์","color":"gold"}')
 fn('skill/getsuga','''execute unless score #nocd ig.cool matches 1 if score @s ig.cool matches 1.. run return run function ichigo:cooldown
+execute if score @s ig.form matches 7 run return run function ichigo:skill/rasengan
 execute unless score #unlimited ig.energy matches 1 if score @s ig.energy matches ..11 run return run function ichigo:no_energy
 execute unless score #unlimited ig.energy matches 1 run scoreboard players remove @s ig.energy 12
 execute unless score #nocd ig.cool matches 1 run scoreboard players set @s ig.cool 20
 scoreboard players set #kind ig.kind 1
 function ichigo:projectile/spawn
 playsound ichigo:slash player @a[distance=..48] ~ ~ ~ 1 1''')
-fn('skill/special','''execute unless score #nocd ig.cool matches 1 if score @s ig.cool matches 1.. run return run function ichigo:cooldown
+fn('skill/rasengan','''execute unless score #nocd ig.cool matches 1 if score @s ig.cool matches 1.. run return run function ichigo:cooldown
+execute unless score #unlimited ig.energy matches 1 if score @s ig.energy matches ..11 run return run function ichigo:no_energy
+execute unless score #unlimited ig.energy matches 1 run scoreboard players remove @s ig.energy 12
+execute unless score #nocd ig.cool matches 1 run scoreboard players set @s ig.cool 25
+scoreboard players set #kind ig.kind 5
+function ichigo:projectile/spawn
+playsound ichigo:release player @a[distance=..48] ~ ~ ~ .9 1.6
+particle minecraft:dust{color:[0.19,0.42,1.0],scale:1.3} ~ ~1 ~ .3 .3 .3 .02 12 normal @a[distance=..40]''')
+fn('skill/special','''execute if score @s ig.form matches 7 run return run function ichigo:skill/kage_bunshin
+execute unless score #nocd ig.cool matches 1 if score @s ig.cool matches 1.. run return run function ichigo:cooldown
 execute unless score #unlimited ig.energy matches 1 if score @s ig.energy matches ..24 run return run function ichigo:no_energy
 execute unless score #unlimited ig.energy matches 1 run scoreboard players remove @s ig.energy 25
 execute unless score #nocd ig.cool matches 1 run scoreboard players set @s ig.cool 60
@@ -291,6 +334,42 @@ scoreboard players set #kind ig.kind 2
 execute if score @s ig.form matches 4 run scoreboard players set #kind ig.kind 3
 function ichigo:projectile/spawn
 playsound ichigo:cero player @a[distance=..48] ~ ~ ~ 1 1''')
+fn('skill/kage_bunshin','''execute unless score #nocd ig.cool matches 1 if score @s ig.cool matches 1.. run return run function ichigo:cooldown
+execute unless score #unlimited ig.energy matches 1 if score @s ig.energy matches ..24 run return run function ichigo:no_energy
+execute unless score #unlimited ig.energy matches 1 run scoreboard players remove @s ig.energy 25
+execute unless score #nocd ig.cool matches 1 run scoreboard players set @s ig.cool 80
+playsound ichigo:shunpo player @a[distance=..48] ~ ~ ~ 1 .8
+particle minecraft:poof ~ ~1 ~ .8 .7 .8 .05 45 normal @a[distance=..40]
+particle minecraft:cloud ~ ~1 ~ .7 .7 .7 .05 32 normal @a[distance=..40]
+function ichigo:skill/kage_spawn''')
+fn('skill/kage_spawn','''execute rotated ~ 0 positioned ~1.15 ~ ~ run summon armor_stand ~ ~ ~ {Tags:["ig.clone","ig.fresh"],Invisible:1b,ShowArms:1b,NoBasePlate:1b,NoGravity:1b,Invulnerable:1b,DisabledSlots:4144959,Pose:{RightArm:[-105f,0f,-24f],LeftArm:[-25f,0f,12f],Body:[0f,0f,0f]}}
+execute rotated ~ 0 positioned ~-1.15 ~ ~ run summon armor_stand ~ ~ ~ {Tags:["ig.clone","ig.fresh"],Invisible:1b,ShowArms:1b,NoBasePlate:1b,NoGravity:1b,Invulnerable:1b,DisabledSlots:4144959,Pose:{RightArm:[-105f,0f,-24f],LeftArm:[-25f,0f,12f],Body:[0f,0f,0f]}}
+execute rotated ~ 0 positioned ~ ~ ~-1.5 run summon armor_stand ~ ~ ~ {Tags:["ig.clone","ig.fresh"],Invisible:1b,ShowArms:1b,NoBasePlate:1b,NoGravity:1b,Invulnerable:1b,DisabledSlots:4144959,Pose:{RightArm:[-70f,0f,-75f],LeftArm:[-65f,0f,65f],Body:[0f,0f,0f]}}
+scoreboard players operation @e[type=armor_stand,tag=ig.fresh] ig.owner = @s ig.id
+scoreboard players set @e[type=armor_stand,tag=ig.fresh] ig.age 0
+item replace entity @e[type=armor_stand,tag=ig.fresh] armor.head with carved_pumpkin[item_model="ichigo:naruto_head"]
+item replace entity @e[type=armor_stand,tag=ig.fresh] armor.chest with leather_chestplate[equippable={slot:"chest",asset_id:"ichigo:naruto"}]
+item replace entity @e[type=armor_stand,tag=ig.fresh] armor.legs with leather_leggings[equippable={slot:"legs",asset_id:"ichigo:naruto"}]
+item replace entity @e[type=armor_stand,tag=ig.fresh] armor.feet with leather_boots[equippable={slot:"feet",asset_id:"ichigo:naruto"}]
+tag @e[type=armor_stand,tag=ig.fresh] remove ig.fresh
+title @s title {"text":"影分身の術！","color":"gold","bold":true}
+playsound ichigo:release player @a[distance=..48] ~ ~ ~ .9 1.2''')
+fn('skill/clone_tick','''scoreboard players add @s ig.age 1
+execute if score @s ig.age matches 3..22 rotated ~ 0 run tp @s ^ ^ ^0.11
+execute if score @s ig.age matches 3..22 run particle minecraft:dust{color:[0.95,0.42,0.08],scale:0.7} ~ ~1 ~ .18 .42 .18 .01 2 normal @a[distance=..32]
+execute if score @s ig.age matches 8 run data merge entity @s {Pose:{RightArm:[-150f,0f,-8f],LeftArm:[-55f,0f,28f],Body:[-8f,0f,0f]}}
+execute if score @s ig.age matches 13 run data merge entity @s {Pose:{RightArm:[-32f,0f,-118f],LeftArm:[-18f,0f,18f],Body:[-5f,0f,0f]}}
+execute if score @s ig.age matches 18 run data merge entity @s {Pose:{RightArm:[-122f,0f,-18f],LeftArm:[-38f,0f,22f],Body:[4f,0f,0f]}}
+execute if score @s ig.age matches 18 run function ichigo:skill/clone_strike
+execute if score @s ig.age matches 38 run particle minecraft:poof ~ ~1 ~ .35 .7 .35 .05 18 normal @a[distance=..32]
+execute if score @s ig.age matches 38.. run kill @s''')
+fn('skill/clone_strike','''scoreboard players operation #owner ig.owner = @s ig.owner
+tag @a remove ig.caster
+execute as @a[tag=ig.active] if score @s ig.id = #owner ig.owner run tag @s add ig.caster
+execute if entity @a[tag=ig.caster] as @e[type=#ichigo:targets,distance=..2.8] run damage @s 6 minecraft:magic by @a[tag=ig.caster,limit=1]
+tag @a remove ig.caster
+particle minecraft:crit ~ ~1 ~ .65 .8 .65 .1 12 normal @a[distance=..32]
+playsound ichigo:slash player @a[distance=..32] ~ ~ ~ .7 1.4''')
 fn('skill/ultimate','''execute unless score #nocd ig.cool matches 1 if score @s ig.ult matches 1.. run return run function ichigo:cooldown
 execute unless score #unlimited ig.energy matches 1 if score @s ig.energy matches ..59 run return run function ichigo:no_energy
 execute unless score #unlimited ig.energy matches 1 run scoreboard players remove @s ig.energy 60
@@ -331,7 +410,7 @@ tag @s remove ig.launch
 execute as @e[type=marker,tag=ig.new,limit=1] at @s run function ichigo:projectile/visual
 tag @e[type=marker,tag=ig.new] remove ig.new''')
 visual=[]
-for kind,name,scale in [(1,'getsuga',1.6),(2,'jujisho',1.9),(3,'cero',1.6),(4,'mugetsu_wave',3.2)]:
+for kind,name,scale in [(1,'getsuga',1.6),(2,'jujisho',1.9),(3,'cero',1.6),(4,'mugetsu_wave',3.2),(5,'rasengan',1.0)]:
     nbt='{Tags:["ig.visual","ig.vnew"],item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"ichigo:'+name+'"}},item_display:"none",brightness:{block:15,sky:15},teleport_duration:1,transformation:{translation:[-0.5f,-0.5f,-0.5f],scale:['+','.join([str(scale)+'f']*3)+'],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f]}}'
     visual.append(f'execute if score @s ig.kind matches {kind} run summon item_display ~ ~ ~ {nbt}')
 visual += ['execute if score @s ig.kind matches 1 if score @s ig.form matches 1 run item replace entity @e[type=item_display,tag=ig.vnew,limit=1] contents with paper[item_model="ichigo:blue_getsuga"]','scoreboard players operation @e[type=item_display,tag=ig.vnew,limit=1] ig.pid = @s ig.pid','tp @e[type=item_display,tag=ig.vnew,limit=1] ~ ~ ~ ~ ~','tag @e[tag=ig.vnew] remove ig.vnew']
@@ -353,6 +432,7 @@ execute if score @s ig.kind matches 1 as @e[type=#ichigo:targets,distance=..2.5]
 execute if score @s ig.kind matches 2 as @e[type=#ichigo:targets,distance=..3.5] run damage @s 20 minecraft:magic by @a[tag=ig.caster,limit=1]
 execute if score @s ig.kind matches 3 as @e[type=#ichigo:targets,distance=..3] run damage @s 26 minecraft:magic by @a[tag=ig.caster,limit=1]
 execute if score @s ig.kind matches 4 as @e[type=#ichigo:targets,distance=..5] run damage @s 42 minecraft:magic by @a[tag=ig.caster,limit=1]
+execute if score @s ig.kind matches 5 as @e[type=#ichigo:targets,distance=..2.5] run damage @s 14 minecraft:magic by @a[tag=ig.caster,limit=1]
 particle minecraft:dust{color:[0.6,0.02,0.06],scale:1.3} ~ ~ ~ .35 .6 .35 0 2 normal @a[distance=..64]
 execute if score @s ig.age matches 32.. run function ichigo:projectile/end''')
 fn('projectile/end','''function ichigo:projectile/find_visual

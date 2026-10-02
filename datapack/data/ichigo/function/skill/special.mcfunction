@@ -1,3 +1,4 @@
+execute if score @s ig.form matches 7 run return run function ichigo:skill/kage_bunshin
 execute unless score #nocd ig.cool matches 1 if score @s ig.cool matches 1.. run return run function ichigo:cooldown
 execute unless score #unlimited ig.energy matches 1 if score @s ig.energy matches ..24 run return run function ichigo:no_energy
 execute unless score #unlimited ig.energy matches 1 run scoreboard players remove @s ig.energy 25

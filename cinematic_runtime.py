@@ -69,6 +69,8 @@ execute as @e[type=item_display,tag=ig.attached] if score @s ig.owner = #owner i
     for i,form in enumerate(FORMS,1):
         player += [f'execute if score @s ig.form matches {i} if score @s ig.tx matches {t} run function ichigo:fx/{"burst" if t==12 else "pulse"}_{form}' for t in [24,18,12,6]]
         player += [f'execute if score @s ig.form matches {i} if score #clock ig.clock matches 0 run function ichigo:fx/pulse_{form}']
+    player += ['execute if score @s ig.form matches 7 run particle minecraft:dust{color:[0.95,0.42,0.08],scale:1.0} ~ ~1 ~ .3 .65 .3 .01 2 normal @a[distance=..40]',
+               'execute if score @s ig.form matches 7 run particle minecraft:dust{color:[0.19,0.42,1.0],scale:0.75} ~ ~1 ~ .25 .5 .25 .01 1 normal @a[distance=..40]']
     fn('fx/player','\n'.join(player))
     # Remove a loaded attachment if its owner disconnects, dies or changes dimension.
     fn('fx/check_owner','''scoreboard players operation #owner ig.owner = @s ig.owner
@@ -111,6 +113,7 @@ execute unless score @s ig.gen = #generation ig.gen run kill @s''')
     for dimension in ['overworld','the_nether','the_end']:
         tick+=f'execute in minecraft:{dimension} as @e[type=item_display,tag=ig.fx] at @s run function ichigo:fx/tick\n'
         tick+=f'execute in minecraft:{dimension} as @e[type=item_display,tag=ig.attached] at @s run function ichigo:fx/check_owner\n'
+        tick+=f'execute in minecraft:{dimension} as @e[type=armor_stand,tag=ig.clone] at @s run function ichigo:skill/clone_tick\n'
     fn('tick',tick)
     # Center every projectile correctly: the item renderer already centers its model.
     fn('projectile/visual',read('projectile/visual').replace('translation:[-0.5f,-0.5f,-0.5f]','translation:[0f,0f,0f]'))

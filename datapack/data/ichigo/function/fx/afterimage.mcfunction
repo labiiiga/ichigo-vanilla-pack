@@ -4,3 +4,4 @@ execute if score @s ig.form matches 3 rotated ~ 0 run function ichigo:fx/ghost_h
 execute if score @s ig.form matches 4 rotated ~ 0 run function ichigo:fx/ghost_vasto
 execute if score @s ig.form matches 5 rotated ~ 0 run function ichigo:fx/ghost_true
 execute if score @s ig.form matches 6 rotated ~ 0 run function ichigo:fx/ghost_mugetsu
+execute if score @s ig.form matches 7 rotated ~ 0 run function ichigo:fx/ghost_naruto

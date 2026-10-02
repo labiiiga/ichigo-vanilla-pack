@@ -18,4 +18,6 @@ execute if score @s ig.fx matches 15 if score @s ig.fxage matches 2 run item rep
 execute if score @s ig.fx matches 15 if score @s ig.fxage matches 4 run item replace entity @s contents with paper[item_model="ichigo:ghost_true_2"]
 execute if score @s ig.fx matches 16 if score @s ig.fxage matches 2 run item replace entity @s contents with paper[item_model="ichigo:ghost_mugetsu_1"]
 execute if score @s ig.fx matches 16 if score @s ig.fxage matches 4 run item replace entity @s contents with paper[item_model="ichigo:ghost_mugetsu_2"]
+execute if score @s ig.fx matches 17 if score @s ig.fxage matches 2 run item replace entity @s contents with paper[item_model="ichigo:ghost_naruto_1"]
+execute if score @s ig.fx matches 17 if score @s ig.fxage matches 4 run item replace entity @s contents with paper[item_model="ichigo:ghost_naruto_2"]
 execute if score @s ig.fxage >= @s ig.life run kill @s
