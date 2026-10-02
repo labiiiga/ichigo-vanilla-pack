@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "ichigo:mugetsu"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "ichigo:mugetsu"
+      }
+    ]
+  }
+}

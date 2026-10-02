@@ -1,0 +1,10 @@
+{
+  "values": [
+    "#minecraft:air",
+    "#minecraft:replaceable",
+    "minecraft:water",
+    "minecraft:lava",
+    "minecraft:light",
+    "#minecraft:leaves"
+  ]
+}

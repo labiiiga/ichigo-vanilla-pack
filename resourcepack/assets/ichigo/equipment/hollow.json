@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "ichigo:hollow"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "ichigo:hollow"
+      }
+    ]
+  }
+}

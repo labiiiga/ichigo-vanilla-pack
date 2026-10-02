@@ -1,0 +1,42 @@
+{
+  "slash": {
+    "sounds": [
+      {
+        "name": "ichigo:slash",
+        "volume": 0.8
+      }
+    ]
+  },
+  "shunpo": {
+    "sounds": [
+      {
+        "name": "ichigo:shunpo",
+        "volume": 0.8
+      }
+    ]
+  },
+  "transform": {
+    "sounds": [
+      {
+        "name": "ichigo:transform",
+        "volume": 0.8
+      }
+    ]
+  },
+  "mugetsu": {
+    "sounds": [
+      {
+        "name": "ichigo:mugetsu",
+        "volume": 0.8
+      }
+    ]
+  },
+  "cero": {
+    "sounds": [
+      {
+        "name": "ichigo:cero",
+        "volume": 0.8
+      }
+    ]
+  }
+}
