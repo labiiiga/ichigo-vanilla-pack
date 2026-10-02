@@ -10,6 +10,7 @@ scoreboard objectives add ig.owner dummy
 scoreboard objectives add ig.kind dummy
 scoreboard objectives add ig.formtime dummy
 scoreboard objectives add ig.dead deathCount
+scoreboard objectives add ig.pid dummy
 scoreboard objectives add ichigo trigger
 scoreboard objectives add ig.use minecraft.used:minecraft.carrot_on_a_stick
 scoreboard players add #next ig.id 0

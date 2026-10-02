@@ -160,7 +160,7 @@ for name,duration in [('slash',.35),('shunpo',.25),('transform',1.6),('mugetsu',
     sounds[name]={'sounds':[{'name':f'ichigo:{name}','volume':.8}]}
 js(RP,'assets/ichigo/sounds.json',sounds)
 
-obj=['ig.id','ig.form','ig.energy','ig.regen','ig.cool','ig.dash','ig.ult','ig.age','ig.owner','ig.kind','ig.formtime','ig.dead']
+obj=['ig.id','ig.form','ig.energy','ig.regen','ig.cool','ig.dash','ig.ult','ig.age','ig.owner','ig.kind','ig.formtime','ig.dead','ig.pid']
 fn('load','\n'.join([f'scoreboard objectives add {o} '+('deathCount' if o=='ig.dead' else 'dummy') for o in obj]+['scoreboard objectives add ichigo trigger','scoreboard objectives add ig.use minecraft.used:minecraft.carrot_on_a_stick','scoreboard players add #next ig.id 0','forceload add 0 0']))
 fn('init','''scoreboard players add #next ig.id 1
 scoreboard players operation @s ig.id = #next ig.id
@@ -295,7 +295,9 @@ execute if score #step ig.age matches ..9 at @s rotated ~ 0 run function ichigo:
 
 fn('projectile/spawn','''scoreboard players operation #owner ig.owner = @s ig.id
 scoreboard players operation #form ig.form = @s ig.form
+scoreboard players add #next ig.pid 1
 execute anchored eyes positioned ^ ^ ^1.8 run summon marker ~ ~ ~ {Tags:["ig.projectile","ig.new"]}
+execute as @e[type=marker,tag=ig.new,limit=1] run scoreboard players operation @s ig.pid = #next ig.pid
 execute as @e[type=marker,tag=ig.new,limit=1] run scoreboard players operation @s ig.owner = #owner ig.owner
 execute as @e[type=marker,tag=ig.new,limit=1] run scoreboard players operation @s ig.kind = #kind ig.kind
 execute as @e[type=marker,tag=ig.new,limit=1] run scoreboard players operation @s ig.form = #form ig.form
@@ -309,11 +311,17 @@ visual=[]
 for kind,name,scale in [(1,'getsuga',1.6),(2,'jujisho',1.9),(3,'cero',1.6),(4,'mugetsu_wave',3.2)]:
     nbt='{Tags:["ig.visual","ig.vnew"],item:{id:"minecraft:paper",count:1,components:{"minecraft:item_model":"ichigo:'+name+'"}},item_display:"none",brightness:{block:15,sky:15},teleport_duration:1,transformation:{translation:[-0.5f,-0.5f,-0.5f],scale:['+','.join([str(scale)+'f']*3)+'],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f]}}'
     visual.append(f'execute if score @s ig.kind matches {kind} run summon item_display ~ ~ ~ {nbt}')
-visual += ['execute if score @s ig.kind matches 1 if score @s ig.form matches 1 run item replace entity @e[type=item_display,tag=ig.vnew,limit=1] contents with paper[item_model="ichigo:blue_getsuga"]','tp @e[type=item_display,tag=ig.vnew,limit=1] ~ ~ ~ ~ ~','ride @e[type=item_display,tag=ig.vnew,limit=1] mount @s','tag @e[tag=ig.vnew] remove ig.vnew']
+visual += ['execute if score @s ig.kind matches 1 if score @s ig.form matches 1 run item replace entity @e[type=item_display,tag=ig.vnew,limit=1] contents with paper[item_model="ichigo:blue_getsuga"]','scoreboard players operation @e[type=item_display,tag=ig.vnew,limit=1] ig.pid = @s ig.pid','tp @e[type=item_display,tag=ig.vnew,limit=1] ~ ~ ~ ~ ~','tag @e[tag=ig.vnew] remove ig.vnew']
 fn('projectile/visual','\n'.join(visual))
+fn('projectile/find_visual','''scoreboard players operation #pid ig.pid = @s ig.pid
+tag @e[type=item_display,tag=ig.follow] remove ig.follow
+execute as @e[type=item_display,tag=ig.visual] if score @s ig.pid = #pid ig.pid run tag @s add ig.follow''')
+fn('projectile/update_visual','''function ichigo:projectile/find_visual
+tp @e[type=item_display,tag=ig.follow] ~ ~ ~ ~ ~''')
 fn('projectile/tick','''scoreboard players add @s ig.age 1
 execute unless block ^ ^ ^1.5 #ichigo:passable run return run function ichigo:projectile/end
 tp @s ^ ^ ^1.5
+execute at @s run function ichigo:projectile/update_visual
 scoreboard players operation #owner ig.owner = @s ig.owner
 tag @a[tag=ig.caster] remove ig.caster
 execute as @a if score @s ig.id = #owner ig.owner run tag @s add ig.caster
@@ -324,7 +332,8 @@ execute if score @s ig.kind matches 3 as @e[type=#ichigo:targets,distance=..3] r
 execute if score @s ig.kind matches 4 as @e[type=#ichigo:targets,distance=..5] run damage @s 42 minecraft:magic by @a[tag=ig.caster,limit=1]
 particle minecraft:dust{color:[0.6,0.02,0.06],scale:1.3} ~ ~ ~ .35 .6 .35 0 2 normal @a[distance=..64]
 execute if score @s ig.age matches 32.. run function ichigo:projectile/end''')
-fn('projectile/end','''execute on passengers run kill @s
+fn('projectile/end','''function ichigo:projectile/find_visual
+kill @e[type=item_display,tag=ig.follow]
 particle minecraft:poof ~ ~ ~ .4 .4 .4 .01 6 normal @a[distance=..48]
 kill @s''')
 

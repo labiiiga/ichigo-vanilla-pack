@@ -1,6 +1,6 @@
 execute as @a[tag=!ig.init] run function ichigo:init
-execute as @a[scores={ig.dead=1..},tag=ig.active] at @s run function ichigo:off
-scoreboard players set @a[scores={ig.dead=1..}] ig.dead 0
+execute as @a[scores={ig.dead=1..},tag=ig.active] unless entity @s[nbt={Health:0.0f}] at @s run function ichigo:off
+execute as @a[scores={ig.dead=1..}] unless entity @s[nbt={Health:0.0f}] run scoreboard players set @s ig.dead 0
 execute as @a[scores={ichigo=1..}] at @s run function ichigo:select
 scoreboard players set @a[scores={ichigo=1..}] ichigo 0
 scoreboard players enable @a ichigo

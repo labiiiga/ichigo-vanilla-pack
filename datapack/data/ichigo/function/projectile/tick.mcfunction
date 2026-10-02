@@ -1,6 +1,7 @@
 scoreboard players add @s ig.age 1
 execute unless block ^ ^ ^1.5 #ichigo:passable run return run function ichigo:projectile/end
 tp @s ^ ^ ^1.5
+execute at @s run function ichigo:projectile/update_visual
 scoreboard players operation #owner ig.owner = @s ig.owner
 tag @a[tag=ig.caster] remove ig.caster
 execute as @a if score @s ig.id = #owner ig.owner run tag @s add ig.caster
