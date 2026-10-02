@@ -53,7 +53,7 @@ Vasto/Mugetsu เป็นการตีความรูปลักษณ์
 โฮสต์ resource pack ZIP บน URL HTTPS ที่โหลดไฟล์โดยตรง และตั้งใน `server.properties`:
 
 ```properties
-resource-pack=https://github.com/labiiiga/ichigo-vanilla-pack/releases/download/v0.1.0/Ichigo-26.2-resourcepack.zip
+resource-pack=https://github.com/labiiiga/ichigo-vanilla-pack/releases/download/v0.1.1/Ichigo-26.2-resourcepack.zip
 resource-pack-sha1=<ค่าจาก dist/resourcepack.sha1>
 require-resource-pack=true
 resource-pack-prompt={"text":"Ichigo: ดาวน์โหลดดาบ 3D ชุดและเอฟเฟกต์เพื่อเล่นบนเซิร์ฟนี้","color":"aqua"}

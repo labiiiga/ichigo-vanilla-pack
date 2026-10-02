@@ -78,7 +78,9 @@ model('true_short', [cube([7,-3,7.3],[9,2,8.7],0),cube([6,2,7.3],[10,16,8.7],0),
 model('mugetsu_blade',katana()+[cube([6.3,y,7],[9.7,y+.7,9],1) for y in range(2,28,3)])
 
 # Head geometry surrounds the player's head; head transforms align to item equip.
-head_display={'head':{'rotation':[0,180,0],'translation':[0,0,0],'scale':[1,1,1]},'gui':{'rotation':[15,-30,0],'scale':[.8,.8,.8]},'ground':{'translation':[0,3,0],'scale':[.5,.5,.5]}}
+# CustomHeadLayer applies a 0.625 equipment scale. Compensate it so a
+# model unit is one player pixel; the layer already supplies head rotation.
+head_display={'head':{'rotation':[0,0,0],'translation':[0,0,0],'scale':[1.6,1.6,1.6]},'gui':{'rotation':[15,-30,0],'scale':[.8,.8,.8]},'ground':{'translation':[0,3,0],'scale':[.5,.5,.5]}}
 def mask(horns=False,mugetsu=False):
     if mugetsu:
         e=[cube([3.8,2,2.9],[12.2,6,3.8],0)]
